@@ -1,0 +1,145 @@
+// DAX measures for the Weather-Aware Energy Intelligence Dashboard.
+// Create a table to hold them (Home > Enter Data > name it "_Measures" > Load),
+// then for each block below: select _Measures > New Measure > paste > Enter.
+// Display folders and number formats are suggestions; set them in the
+// Measure tools ribbon.
+
+// ───────────────────────── Consumption ─────────────────────────
+
+Total kWh =
+SUM ( fact_energy_hourly[energy_kwh] )
+
+HVAC kWh =
+SUM ( fact_energy_hourly[hvac_kwh] )
+
+Base kWh =
+SUM ( fact_energy_hourly[base_kwh] )
+
+HVAC Share % =
+DIVIDE ( [HVAC kWh], [Total kWh] )
+
+Total Cost =
+SUM ( fact_energy_hourly[cost] )
+
+CO2 Tonnes =
+DIVIDE ( SUM ( fact_energy_hourly[co2_kg] ), 1000 )
+
+// kWh per square metre: compares buildings of different size fairly.
+Energy Intensity kWh per m2 =
+DIVIDE ( [Total kWh], SUM ( dim_building[floor_area_m2] ) )
+
+// Highest combined load in any single hour of the selected period.
+Peak Demand kW =
+MAXX (
+    VALUES ( fact_energy_hourly[timestamp_utc] ),
+    CALCULATE ( SUM ( fact_energy_hourly[energy_kwh] ) )
+)
+
+Avg Daily kWh =
+AVERAGEX ( VALUES ( dim_date[date] ), [Total kWh] )
+
+// ───────────────────────── Time comparison ─────────────────────
+// Needs dim_date marked as the date table (see the guide, step 4).
+
+Total kWh LY =
+CALCULATE ( [Total kWh], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+kWh YoY % =
+VAR LastYear = [Total kWh LY]
+RETURN
+    IF ( NOT ISBLANK ( LastYear ), DIVIDE ( [Total kWh] - LastYear, LastYear ) )
+
+// ───────────────────────── Weather ─────────────────────────────
+
+Avg Temperature C =
+CALCULATE (
+    AVERAGE ( fact_weather_hourly[temperature_2m] ),
+    fact_weather_hourly[is_forecast] = 0
+)
+
+Max Temperature C =
+CALCULATE (
+    MAX ( fact_weather_hourly[temperature_2m] ),
+    fact_weather_hourly[is_forecast] = 0
+)
+
+// Hours hotter than 30 C, a simple "heat stress" indicator.
+Hot Hours =
+CALCULATE (
+    COUNTROWS ( fact_weather_hourly ),
+    fact_weather_hourly[is_forecast] = 0,
+    fact_weather_hourly[temperature_2m] > 30
+)
+
+// ───────────────────────── Model & forecast ────────────────────
+
+Model Actual kWh =
+SUM ( fact_energy_daily_model[actual_kwh] )
+
+Model Predicted kWh =
+SUM ( fact_energy_daily_model[predicted_kwh] )
+
+Model Variance % =
+DIVIDE ( [Model Actual kWh] - [Model Predicted kWh], [Model Predicted kWh] )
+
+Forecast kWh Next 7 Days =
+SUM ( fact_energy_forecast[predicted_kwh] )
+
+Forecast Cost Next 7 Days =
+[Forecast kWh Next 7 Days] * 2.30   // illustrative EGP tariff from config.toml
+
+// Model scores from the most recent training run.
+Latest Model MAPE % =
+VAR LatestRun = MAX ( model_metrics[trained_at_utc] )
+RETURN
+    CALCULATE ( AVERAGE ( model_metrics[mape_pct] ), model_metrics[trained_at_utc] = LatestRun )
+
+Latest Model R2 =
+VAR LatestRun = MAX ( model_metrics[trained_at_utc] )
+RETURN
+    CALCULATE ( AVERAGE ( model_metrics[r2] ), model_metrics[trained_at_utc] = LatestRun )
+
+// "Every extra degree of heat costs X kWh per hour" (summed across selected buildings).
+Cooling Sensitivity kWh per C =
+VAR LatestRun = MAX ( model_metrics[trained_at_utc] )
+RETURN
+    CALCULATE ( SUM ( model_metrics[kwh_per_cooling_degree] ), model_metrics[trained_at_utc] = LatestRun )
+
+// ───────────────────────── Anomalies ───────────────────────────
+
+Anomaly Hours =
+COUNTROWS ( fact_anomalies )
+
+Anomaly Excess kWh =
+SUM ( fact_anomalies[excess_kwh] )
+
+Anomaly Excess Cost =
+[Anomaly Excess kWh] * 2.30
+
+// ───────────────────────── Pipeline health ─────────────────────
+
+Last Successful Refresh =
+CALCULATE ( MAX ( pipeline_runs[finished_at_utc] ), pipeline_runs[status] = "success" )
+
+Data Freshness Label =
+"Data as of " & FORMAT ( [Last Successful Refresh], "dd mmm yyyy hh:mm" ) & " UTC"
+
+Latest Run Status =
+VAR LatestStart = MAX ( pipeline_runs[started_at_utc] )
+RETURN
+    CALCULATE ( SELECTEDVALUE ( pipeline_runs[status] ), pipeline_runs[started_at_utc] = LatestStart )
+
+Successful Runs % =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( pipeline_runs ), pipeline_runs[status] = "success" ),
+    COUNTROWS ( pipeline_runs )
+)
+
+Checks Warned Latest Run =
+VAR LatestStart = MAX ( data_quality_checks[run_started_at_utc] )
+RETURN
+    CALCULATE (
+        COUNTROWS ( data_quality_checks ),
+        data_quality_checks[run_started_at_utc] = LatestStart,
+        data_quality_checks[status] <> "pass"
+    ) + 0

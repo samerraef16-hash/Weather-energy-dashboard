@@ -1,0 +1,86 @@
+# Central configuration for the pipeline.
+# Change the location or buildings here; no code changes needed.
+
+[location]
+name = "El Gouna, Egypt"
+latitude = 27.39
+longitude = 33.68
+timezone = "Africa/Cairo"
+
+[pipeline]
+# First date loaded on an empty database (historical backfill).
+backfill_start = "2025-01-01"
+# Days of recent history and of forecast pulled on every run.
+past_days = 7
+forecast_days = 7
+# The Open-Meteo archive lags real time by a few days; anything newer
+# comes from the forecast endpoint's past_days window.
+archive_lag_days = 6
+# Most recent N days held out to measure model accuracy.
+test_days = 30
+
+[economics]
+# Illustrative values for dashboard KPIs, not an official tariff.
+currency = "EGP"
+price_per_kwh = 2.30
+grid_kg_co2_per_kwh = 0.45
+
+[paths]
+database = "data/warehouse.db"
+export_dir = "data/powerbi"
+
+[api]
+forecast_url = "https://api.open-meteo.com/v1/forecast"
+archive_url = "https://archive-api.open-meteo.com/v1/archive"
+timeout_seconds = 60
+max_retries = 3
+hourly_variables = [
+    "temperature_2m",
+    "relative_humidity_2m",
+    "apparent_temperature",
+    "cloud_cover",
+    "wind_speed_10m",
+    "shortwave_radiation",
+    "precipitation",
+]
+
+# Simulated buildings. Loads are in kW (= kWh per hour).
+# Egypt's working week is Sunday-Thursday; the weekend is Friday-Saturday.
+[[buildings]]
+building_id = "GOU-HTL"
+name = "Lagoon Resort Hotel"
+building_type = "Hotel"
+floor_area_m2 = 18000
+base_load_kw = 180.0
+peak_occupied_kw = 120.0     # extra load when fully occupied
+cooling_kw_per_degree = 22.0
+cooling_balance_c = 24.0
+heating_kw_per_degree = 8.0
+heating_balance_c = 16.0
+solar_kw_per_kw_m2 = 40.0    # extra kW per 1 kW/m2 of sunshine
+
+[[buildings]]
+building_id = "GOU-OFF"
+name = "Marina Business Center"
+building_type = "Office"
+floor_area_m2 = 6000
+base_load_kw = 25.0
+peak_occupied_kw = 70.0
+cooling_kw_per_degree = 6.0
+cooling_balance_c = 23.0
+heating_kw_per_degree = 2.5
+heating_balance_c = 17.0
+solar_kw_per_kw_m2 = 15.0
+
+[[buildings]]
+building_id = "GOU-MAL"
+name = "Downtown Retail Mall"
+building_type = "Retail"
+floor_area_m2 = 12000
+base_load_kw = 60.0
+peak_occupied_kw = 160.0
+cooling_kw_per_degree = 14.0
+cooling_balance_c = 24.0
+heating_kw_per_degree = 4.0
+heating_balance_c = 16.0
+solar_kw_per_kw_m2 = 25.0

@@ -1,0 +1,9 @@
+[project]
+name = "weather-energy-dashboard"
+version = "1.0.0"
+description = "Automated weather + energy data pipeline feeding a Power BI dashboard"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
