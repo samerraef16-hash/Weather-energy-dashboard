@@ -33,3 +33,20 @@ run_id,dataset,check_name,status,rows_affected,detail,run_started_at_utc
 20261028T193354Z,weather,required_columns,pass,0,9 columns present,2026-10-28 19:33:54
 20261028T193354Z,weather,temperature_not_null,pass,0,rows without temperature are quarantined,2026-10-28 19:33:54
 20261028T193354Z,weather,unique_key,pass,0,one row per timestamp_utc,2026-10-28 19:33:54
+20261028T193513Z,energy,all_buildings_present,pass,0,3 buildings,2026-10-28 19:35:13
+20261028T193513Z,energy,non_negative_kwh,pass,0,kWh must be >= 0,2026-10-28 19:35:13
+20261028T193513Z,energy,required_columns,pass,0,5 columns present,2026-10-28 19:35:13
+20261028T193513Z,energy,unique_key,pass,0,one row per timestamp_utc + building_id,2026-10-28 19:35:13
+20261028T193513Z,weather,forecast_available,pass,149,149 forecast hours,2026-10-28 19:35:13
+20261028T193513Z,weather,freshness,pass,0,latest actual hour is 1h old,2026-10-28 19:35:13
+20261028T193513Z,weather,hourly_continuity,pass,0,0 missing hours in fetched window,2026-10-28 19:35:13
+20261028T193513Z,weather,range_apparent_temperature,pass,0,expected -20 to 65,2026-10-28 19:35:13
+20261028T193513Z,weather,range_cloud_cover,pass,0,expected 0 to 100,2026-10-28 19:35:13
+20261028T193513Z,weather,range_precipitation,pass,0,expected 0 to 300,2026-10-28 19:35:13
+20261028T193513Z,weather,range_relative_humidity_2m,pass,0,expected 0 to 100,2026-10-28 19:35:13
+20261028T193513Z,weather,range_shortwave_radiation,pass,0,expected 0 to 1400,2026-10-28 19:35:13
+20261028T193513Z,weather,range_temperature_2m,pass,0,expected -10 to 55,2026-10-28 19:35:13
+20261028T193513Z,weather,range_wind_speed_10m,pass,0,expected 0 to 200,2026-10-28 19:35:13
+20261028T193513Z,weather,required_columns,pass,0,9 columns present,2026-10-28 19:35:13
+20261028T193513Z,weather,temperature_not_null,pass,0,rows without temperature are quarantined,2026-10-28 19:35:13
+20261028T193513Z,weather,unique_key,pass,0,one row per timestamp_utc,2026-10-28 19:35:13
