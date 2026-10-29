@@ -1,0 +1,197 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "294f5e9d0d6c4781b981",
+  "position": {
+    "x": 32,
+    "y": 232,
+    "z": 39000,
+    "width": 1100,
+    "height": 400,
+    "tabOrder": 39000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pipeline_runs"
+                    }
+                  },
+                  "Property": "started_at_utc"
+                }
+              },
+              "queryRef": "pipeline_runs.started_at_utc",
+              "nativeQueryRef": "started_at_utc",
+              "displayName": "Started (UTC)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pipeline_runs"
+                    }
+                  },
+                  "Property": "status"
+                }
+              },
+              "queryRef": "pipeline_runs.status",
+              "nativeQueryRef": "status",
+              "displayName": "Status"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "pipeline_runs"
+                        }
+                      },
+                      "Property": "weather_rows_loaded"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(pipeline_runs.weather_rows_loaded)",
+              "nativeQueryRef": "weather_rows_loaded",
+              "displayName": "Weather rows"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "pipeline_runs"
+                        }
+                      },
+                      "Property": "energy_rows_loaded"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(pipeline_runs.energy_rows_loaded)",
+              "nativeQueryRef": "energy_rows_loaded",
+              "displayName": "Energy rows"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "pipeline_runs"
+                        }
+                      },
+                      "Property": "duration_seconds"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(pipeline_runs.duration_seconds)",
+              "nativeQueryRef": "duration_seconds",
+              "displayName": "Duration (s)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pipeline_runs"
+                    }
+                  },
+                  "Property": "message"
+                }
+              },
+              "queryRef": "pipeline_runs.message",
+              "nativeQueryRef": "message",
+              "displayName": "Message"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "pipeline_runs"
+                  }
+                },
+                "Property": "started_at_utc"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Pipeline run log'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

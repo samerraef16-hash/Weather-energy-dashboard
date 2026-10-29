@@ -1,0 +1,187 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "f6d97ed166a44335a2d8",
+  "position": {
+    "x": 32,
+    "y": 656,
+    "z": 41000,
+    "width": 1856,
+    "height": 392,
+    "tabOrder": 41000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "data_quality_checks"
+                    }
+                  },
+                  "Property": "run_started_at_utc"
+                }
+              },
+              "queryRef": "data_quality_checks.run_started_at_utc",
+              "nativeQueryRef": "run_started_at_utc",
+              "displayName": "Run (UTC)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "data_quality_checks"
+                    }
+                  },
+                  "Property": "dataset"
+                }
+              },
+              "queryRef": "data_quality_checks.dataset",
+              "nativeQueryRef": "dataset",
+              "displayName": "Dataset"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "data_quality_checks"
+                    }
+                  },
+                  "Property": "check_name"
+                }
+              },
+              "queryRef": "data_quality_checks.check_name",
+              "nativeQueryRef": "check_name",
+              "displayName": "Check"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "data_quality_checks"
+                    }
+                  },
+                  "Property": "status"
+                }
+              },
+              "queryRef": "data_quality_checks.status",
+              "nativeQueryRef": "status",
+              "displayName": "Result"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "data_quality_checks"
+                        }
+                      },
+                      "Property": "rows_affected"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(data_quality_checks.rows_affected)",
+              "nativeQueryRef": "rows_affected",
+              "displayName": "Rows affected"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "data_quality_checks"
+                    }
+                  },
+                  "Property": "detail"
+                }
+              },
+              "queryRef": "data_quality_checks.detail",
+              "nativeQueryRef": "detail",
+              "displayName": "Detail"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "data_quality_checks"
+                  }
+                },
+                "Property": "run_started_at_utc"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Data-quality checks (last 30 runs)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

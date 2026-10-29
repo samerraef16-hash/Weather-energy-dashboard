@@ -1,0 +1,129 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "fdac5e7d462645c892c4",
+  "position": {
+    "x": 32,
+    "y": 232,
+    "z": 19000,
+    "width": 1100,
+    "height": 816,
+    "tabOrder": 19000
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_date"
+                    }
+                  },
+                  "Property": "date"
+                }
+              },
+              "queryRef": "dim_date.date",
+              "nativeQueryRef": "date"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_building"
+                    }
+                  },
+                  "Property": "building_name"
+                }
+              },
+              "queryRef": "dim_building.building_name",
+              "nativeQueryRef": "building_name"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Avg Temperature C"
+                }
+              },
+              "queryRef": "_Measures.Avg Temperature C",
+              "nativeQueryRef": "Avg Temperature C",
+              "displayName": "Avg temperature (°C)"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Total kWh"
+                }
+              },
+              "queryRef": "_Measures.Total kWh",
+              "nativeQueryRef": "Total kWh",
+              "displayName": "Energy per day (kWh)"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Daily consumption vs. temperature (one dot per building per day)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -11,8 +11,23 @@ New data arrives every day with **no manual collection**: GitHub Actions
 runs the pipeline each morning and publishes fresh CSVs, and Power BI loads them
 straight from this repository.
 
-<!-- Add screenshots after building the report (see docs/powerbi_guide.md, step 7) -->
-<!-- ![Overview page](docs/images/overview.png) -->
+![Overview page](docs/images/overview.png)
+
+<table>
+  <tr>
+    <td><img src="docs/images/weather_impact.png" alt="Weather Impact page"></td>
+    <td><img src="docs/images/forecast_model.png" alt="Forecast and Model page"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Weather Impact</b>: each extra degree adds ~31 kWh per hour across the three buildings</td>
+    <td align="center"><b>Forecast & Model</b>: 7-day load forecast, 3.3 % model error, detected anomalies</td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/pipeline_health.png" alt="Pipeline Health page"></td>
+    <td valign="top"><b>Pipeline Health</b>: every automated run and all 17 data-quality checks, so the
+    dashboard proves its own data is fresh and validated.</td>
+  </tr>
+</table>
 
 ---
 
@@ -75,10 +90,25 @@ erDiagram
 ```
 
 Report pages: **Overview** · **Weather Impact** · **Forecast & Model** · **Pipeline Health**.
-The full build guide, written for first-time Power BI users, is in
-[`docs/powerbi_guide.md`](docs/powerbi_guide.md). The DAX measures are in
-[`powerbi/measures.dax`](powerbi/measures.dax) and the Power Query scripts in
-[`powerbi/power_query/`](powerbi/power_query/).
+
+The report is saved as a **Power BI Project (`.pbip`)**: the semantic model is
+stored as TMDL and every page and visual as JSON (PBIR format), so the whole
+dashboard is plain text that can be reviewed in a pull request like code.
+Open [`El Gouna weather.pbip`](El%20Gouna%20weather.pbip) in Power BI Desktop
+and click **Refresh** to load the latest data.
+
+- 33 DAX measures: [`_Measures.tmdl`](El%20Gouna%20weather.SemanticModel/definition/tables/_Measures.tmdl)
+  (also as a readable list in [`powerbi/measures.dax`](powerbi/measures.dax))
+- Power Query scripts, one per table: [`powerbi/power_query/`](powerbi/power_query/)
+- Step-by-step guide to building the report by hand: [`docs/powerbi_guide.md`](docs/powerbi_guide.md)
+
+Some modelling details worth noting:
+- **Year-over-year compares like with like.** Only days that also have data a
+  year earlier are compared, so a range starting before the history begins
+  doesn't show a fake +100 %.
+- **Daylight saving.** Egypt's clocks go back in late October, so one local
+  hour occurs twice. Hourly forecast charts average rather than sum to avoid a
+  false spike.
 
 ### How the dashboard stays up to date
 
@@ -115,11 +145,15 @@ No code changes are needed.
 ├── data/
 │   ├── warehouse.db                 # SQLite warehouse (updated daily)
 │   └── powerbi/*.csv                # star-schema exports read by Power BI
+├── El Gouna weather.pbip            # open this in Power BI Desktop
+├── El Gouna weather.SemanticModel/  # tables, relationships, measures (TMDL)
+├── El Gouna weather.Report/         # 4 pages, 41 visuals, custom theme (PBIR)
 ├── powerbi/
 │   ├── power_query/*.pq             # Power Query (M) script per table
-│   ├── measures.dax                 # all DAX measures
-│   └── WeatherEnergyDashboard.pbix  # the report
-└── docs/powerbi_guide.md            # step-by-step build guide
+│   └── measures.dax                 # readable list of all DAX measures
+└── docs/
+    ├── powerbi_guide.md             # step-by-step build guide
+    └── images/                      # dashboard screenshots
 ```
 
 ## Design decisions
@@ -143,6 +177,8 @@ No code changes are needed.
   `simulate.py` with another extract step.
 - Power BI Desktop refresh is one click. Fully hands-off refresh requires the
   Power BI Service (work/school account).
+- GitHub may start scheduled runs late when its servers are busy (runs have
+  started hours after 03:00 UTC). The data still arrives the same day.
 - GitHub disables scheduled workflows after 60 days without repository
   activity. Re-enable it from the Actions tab if that happens.
 - Ideas: tariff time-of-use pricing, solar PV simulation, more cities, alerting

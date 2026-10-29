@@ -1,5 +1,10 @@
 # Power BI Guide: Building the Dashboard Step by Step
 
+> **The finished report is already in this repository** as
+> `El Gouna weather.pbip`: open it in Power BI Desktop and click **Refresh**.
+> This guide shows how to build the same thing by hand, which is the best way
+> to learn how it works. Your page layout can differ from the finished report.
+
 This guide assumes you have **never connected Power BI to online data before**.
 Follow the steps in order. Plan for 2–4 hours the first time.
 

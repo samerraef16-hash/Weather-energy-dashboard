@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "873a99adb8ce42d5991f",
+  "displayName": "Pipeline Health",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920
+}

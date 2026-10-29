@@ -1,0 +1,116 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "4dfeb674a6d14a79b367",
+  "position": {
+    "x": 32,
+    "y": 232,
+    "z": 29000,
+    "width": 1100,
+    "height": 400,
+    "tabOrder": 29000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_energy_forecast"
+                    }
+                  },
+                  "Property": "datetime_local"
+                }
+              },
+              "queryRef": "fact_energy_forecast.datetime_local",
+              "nativeQueryRef": "datetime_local",
+              "displayName": "Local time"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_building"
+                    }
+                  },
+                  "Property": "building_name"
+                }
+              },
+              "queryRef": "dim_building.building_name",
+              "nativeQueryRef": "building_name"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_energy_forecast"
+                        }
+                      },
+                      "Property": "predicted_kwh"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(fact_energy_forecast.predicted_kwh)",
+              "nativeQueryRef": "predicted_kwh",
+              "displayName": "Predicted kWh"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Predicted hourly load, next 7 days'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

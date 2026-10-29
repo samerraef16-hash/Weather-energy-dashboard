@@ -1,0 +1,98 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "c821f50ed95c495baa84",
+  "position": {
+    "x": 1156,
+    "y": 232,
+    "z": 30000,
+    "width": 732,
+    "height": 400,
+    "tabOrder": 30000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_energy_forecast"
+                    }
+                  },
+                  "Property": "datetime_local"
+                }
+              },
+              "queryRef": "fact_energy_forecast.datetime_local",
+              "nativeQueryRef": "datetime_local",
+              "displayName": "Local time"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_energy_forecast"
+                        }
+                      },
+                      "Property": "temperature_2m"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(fact_energy_forecast.temperature_2m)",
+              "nativeQueryRef": "temperature_2m",
+              "displayName": "Temperature (°C)"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Forecast temperature (°C)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

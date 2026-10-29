@@ -1,40 +1,40 @@
 table _Measures
-	lineageTag: a2201024-7760-47df-bd58-d18521c973fe
+	lineageTag: a7c497f7-24f7-4fba-b01d-5eee21c00dc1
 
 	measure 'Total kWh' = SUM ( fact_energy_hourly[energy_kwh] )
 		formatString: #,0
 		displayFolder: Consumption
-		lineageTag: e034dacd-17f9-4588-a294-ec1eaf2302a9
+		lineageTag: 646eaa29-7967-4e06-91ab-09af222bfe3f
 
 	measure 'HVAC kWh' = SUM ( fact_energy_hourly[hvac_kwh] )
 		formatString: #,0
 		displayFolder: Consumption
-		lineageTag: 45be2f1c-1581-4c29-888e-bfce8885d1a3
+		lineageTag: b2d70943-ed6d-48e7-8142-f7c3eac1f67b
 
 	measure 'Base kWh' = SUM ( fact_energy_hourly[base_kwh] )
 		formatString: #,0
 		displayFolder: Consumption
-		lineageTag: ca862449-65c4-4c74-a4ec-07080c2a10ab
+		lineageTag: b3235d8e-e5e2-4040-b73c-9092e90e324f
 
 	measure 'HVAC Share %' = DIVIDE ( [HVAC kWh], [Total kWh] )
 		formatString: 0.0%
 		displayFolder: Consumption
-		lineageTag: 6f73d808-959e-481c-bfb8-ac36ee616208
+		lineageTag: 99a5650c-4835-41ad-bb0a-14d65a65098b
 
 	measure 'Total Cost' = SUM ( fact_energy_hourly[cost] )
 		formatString: #,0
 		displayFolder: Consumption
-		lineageTag: fdbcc8a6-711c-4632-ac73-a2ff765b9fba
+		lineageTag: eca656c8-c9bd-42a5-bb36-3b844071f0f1
 
 	measure 'CO2 Tonnes' = DIVIDE ( SUM ( fact_energy_hourly[co2_kg] ), 1000 )
 		formatString: #,0.0
 		displayFolder: Consumption
-		lineageTag: 425a0322-fefa-4167-a57d-900604ce8b71
+		lineageTag: 907563da-f222-4467-8b32-cd554ee4fe6b
 
 	measure 'Energy Intensity kWh per m2' = DIVIDE ( [Total kWh], SUM ( dim_building[floor_area_m2] ) )
 		formatString: #,0.0
 		displayFolder: Consumption
-		lineageTag: 931851e6-0686-417e-948b-c7fe54162e1c
+		lineageTag: 7188d938-b4d8-4dff-8b82-8f6865a09353
 
 	measure 'Peak Demand kW' =
 			MAXX (
@@ -43,25 +43,31 @@ table _Measures
 			)
 		formatString: #,0
 		displayFolder: Consumption
-		lineageTag: 6174ae4d-c298-42b6-a2d0-40e39dbace3d
+		lineageTag: 483a404b-3804-4017-9058-df334b0d3fbc
 
 	measure 'Avg Daily kWh' = AVERAGEX ( VALUES ( dim_date[date] ), [Total kWh] )
 		formatString: #,0
 		displayFolder: Consumption
-		lineageTag: 3cd17469-acb2-49fb-8237-b4898252e702
+		lineageTag: c73837fd-65af-4d18-8c47-39a4fb11d5bd
 
 	measure 'Total kWh LY' = CALCULATE ( [Total kWh], SAMEPERIODLASTYEAR ( dim_date[date] ) )
 		formatString: #,0
 		displayFolder: Time comparison
-		lineageTag: cef77ce6-5106-4d0c-956a-ef3a0b325fea
+		lineageTag: c60e730b-2606-4363-be4d-13c3b06bead0
 
 	measure 'kWh YoY %' =
-			VAR LastYear = [Total kWh LY]
+			VAR DaysWithHistory =
+			    FILTER (
+			        VALUES ( dim_date[date] ),
+			        NOT ISBLANK ( [Total kWh] ) && NOT ISBLANK ( [Total kWh LY] )
+			    )
+			VAR ThisYear = CALCULATE ( [Total kWh], DaysWithHistory )
+			VAR LastYear = CALCULATE ( [Total kWh LY], DaysWithHistory )
 			RETURN
-			    IF ( NOT ISBLANK ( LastYear ), DIVIDE ( [Total kWh] - LastYear, LastYear ) )
+			    DIVIDE ( ThisYear - LastYear, LastYear )
 		formatString: +0.0%;-0.0%;0.0%
 		displayFolder: Time comparison
-		lineageTag: 1cfdb06f-9f4f-4bcb-964c-1430fb20336f
+		lineageTag: 2e441b54-5dfd-4241-8db0-e62cd960bef2
 
 	measure 'Avg Temperature C' =
 			CALCULATE (
@@ -70,7 +76,7 @@ table _Measures
 			)
 		formatString: 0.0
 		displayFolder: Weather
-		lineageTag: b2232161-b765-4630-96a7-b20acde92e48
+		lineageTag: b670337a-9090-4433-8bf4-3bb61b6c1038
 
 	measure 'Max Temperature C' =
 			CALCULATE (
@@ -79,7 +85,7 @@ table _Measures
 			)
 		formatString: 0.0
 		displayFolder: Weather
-		lineageTag: 9915ef32-8250-4b11-a36e-da969d23294a
+		lineageTag: e532c1ae-8b4e-48b4-ab8b-2e1da4037cfe
 
 	measure 'Hot Hours' =
 			CALCULATE (
@@ -89,32 +95,42 @@ table _Measures
 			)
 		formatString: #,0
 		displayFolder: Weather
-		lineageTag: 3ffc2138-8891-4452-abdb-86be326d8bd2
+		lineageTag: 331c9a2c-7928-482e-822f-3486963fd9ab
 
 	measure 'Model Actual kWh' = SUM ( fact_energy_daily_model[actual_kwh] )
 		formatString: #,0
 		displayFolder: Model & forecast
-		lineageTag: c81093ca-47cb-4cca-82b6-58aa117e1de3
+		lineageTag: bfa5ea9e-8c35-4316-86bb-9b4f3dd9e4f4
 
 	measure 'Model Predicted kWh' = SUM ( fact_energy_daily_model[predicted_kwh] )
 		formatString: #,0
 		displayFolder: Model & forecast
-		lineageTag: e8a043eb-2d5a-47de-8f1c-30e56bae2fce
+		lineageTag: 760654f3-6f68-47ac-9b41-f154b427e259
+
+	measure 'Model Actual kWh 90d' = CALCULATE ( [Model Actual kWh], KEEPFILTERS ( dim_date[date] >= TODAY () - 90 ) )
+		formatString: #,0
+		displayFolder: Model & forecast
+		lineageTag: 1d47c331-9ec4-4672-9bd2-a8fd1551bdbe
+
+	measure 'Model Predicted kWh 90d' = CALCULATE ( [Model Predicted kWh], KEEPFILTERS ( dim_date[date] >= TODAY () - 90 ) )
+		formatString: #,0
+		displayFolder: Model & forecast
+		lineageTag: 3bafa34c-12a6-47d3-b44f-cdebeda4ae18
 
 	measure 'Model Variance %' = DIVIDE ( [Model Actual kWh] - [Model Predicted kWh], [Model Predicted kWh] )
 		formatString: +0.0%;-0.0%;0.0%
 		displayFolder: Model & forecast
-		lineageTag: c06e093f-041a-494b-96a1-3f615d8a9e85
+		lineageTag: d494c1f1-882b-4929-98af-e8c9fe6140cc
 
 	measure 'Forecast kWh Next 7 Days' = SUM ( fact_energy_forecast[predicted_kwh] )
 		formatString: #,0
 		displayFolder: Model & forecast
-		lineageTag: d7975c88-4d8b-461d-84eb-7e4707871e2c
+		lineageTag: 61ed048e-a65e-4d7b-9117-1f2f2e3cbf53
 
 	measure 'Forecast Cost Next 7 Days' = [Forecast kWh Next 7 Days] * 2.30
 		formatString: #,0
 		displayFolder: Model & forecast
-		lineageTag: 252da9a4-f5a3-498d-90f1-6614aea3b4ca
+		lineageTag: de65d427-0814-4bff-9601-f9ddec57676a
 
 	measure 'Latest Model MAPE %' =
 			VAR LatestRun = MAX ( model_metrics[trained_at_utc] )
@@ -125,7 +141,7 @@ table _Measures
 			    )
 		formatString: 0.0%
 		displayFolder: Model & forecast
-		lineageTag: d6f270c0-e2a5-402b-a263-e4d652e36011
+		lineageTag: 46f8256c-86b4-47da-9c1d-ad23baa1dbab
 
 	measure 'Latest Model R2' =
 			VAR LatestRun = MAX ( model_metrics[trained_at_utc] )
@@ -133,7 +149,7 @@ table _Measures
 			    CALCULATE ( AVERAGE ( model_metrics[r2] ), model_metrics[trained_at_utc] = LatestRun )
 		formatString: 0.000
 		displayFolder: Model & forecast
-		lineageTag: 6984b779-4fd4-47a3-b730-ff8788817fea
+		lineageTag: bbcfb39c-1f70-4a50-8fd7-56c81b53ec4f
 
 	measure 'Cooling Sensitivity kWh per C' =
 			VAR LatestRun = MAX ( model_metrics[trained_at_utc] )
@@ -141,38 +157,38 @@ table _Measures
 			    CALCULATE ( SUM ( model_metrics[kwh_per_cooling_degree] ), model_metrics[trained_at_utc] = LatestRun )
 		formatString: #,0.0
 		displayFolder: Model & forecast
-		lineageTag: ba13c673-f205-4594-a388-3bff5d631fbd
+		lineageTag: deedeafe-aeb7-44e7-bea6-82d8c4dd5642
 
 	measure 'Anomaly Hours' = COUNTROWS ( fact_anomalies ) + 0
 		formatString: #,0
 		displayFolder: Anomalies
-		lineageTag: 52928568-a468-4c34-b057-118d45fead43
+		lineageTag: f99df9d7-ff87-46e3-8ab5-7d8f4fa488a4
 
 	measure 'Anomaly Excess kWh' = SUM ( fact_anomalies[excess_kwh] )
 		formatString: #,0
 		displayFolder: Anomalies
-		lineageTag: bb1e6ced-a018-4d79-847d-662d1d079d50
+		lineageTag: 74829f6f-02cd-4d0f-9f2b-a4db8cf07210
 
 	measure 'Anomaly Excess Cost' = [Anomaly Excess kWh] * 2.30
 		formatString: #,0
 		displayFolder: Anomalies
-		lineageTag: 8610b3a2-7136-49a9-add6-ee6a83eac38f
+		lineageTag: 9f7a9873-b4a4-4f40-8a3a-bccb796b8286
 
 	measure 'Last Successful Refresh' = CALCULATE ( MAX ( pipeline_runs[finished_at_utc] ), pipeline_runs[status] = "success" )
 		formatString: dd mmm yyyy hh:nn
 		displayFolder: Pipeline health
-		lineageTag: aaa52a8f-5795-4240-991d-8f6c58fc20a7
+		lineageTag: 4315a02d-c39f-4b50-aff4-7773706ae91d
 
 	measure 'Data Freshness Label' = "Data as of " & FORMAT ( [Last Successful Refresh], "dd mmm yyyy hh:nn" ) & " UTC"
 		displayFolder: Pipeline health
-		lineageTag: 439e6127-5ca1-4ea0-9ee1-adb5b301e0aa
+		lineageTag: 44e6b433-10b5-46c2-85e3-61d418843efa
 
 	measure 'Latest Run Status' =
 			VAR LatestStart = MAX ( pipeline_runs[started_at_utc] )
 			RETURN
 			    CALCULATE ( SELECTEDVALUE ( pipeline_runs[status] ), pipeline_runs[started_at_utc] = LatestStart )
 		displayFolder: Pipeline health
-		lineageTag: 2661536d-d12e-4d6c-84a1-c89fa705ada3
+		lineageTag: 0a9334c9-5a81-4650-89ec-0609088b087a
 
 	measure 'Successful Runs %' =
 			DIVIDE (
@@ -181,7 +197,7 @@ table _Measures
 			)
 		formatString: 0.0%
 		displayFolder: Pipeline health
-		lineageTag: b2b9e687-6ee7-4f50-8e7c-ca844181c477
+		lineageTag: 93867618-cd03-4c75-af7a-d803aa8af919
 
 	measure 'Checks Warned Latest Run' =
 			VAR LatestStart = MAX ( data_quality_checks[run_started_at_utc] )
@@ -193,17 +209,17 @@ table _Measures
 			    ) + 0
 		formatString: #,0
 		displayFolder: Pipeline health
-		lineageTag: 77f514cd-6d89-401c-9449-b40a690695ba
+		lineageTag: 413f5771-8297-4466-bf8b-c574e6866219
 
 	measure 'Pipeline Runs' = COUNTROWS ( pipeline_runs )
 		formatString: #,0
 		displayFolder: Pipeline health
-		lineageTag: 3479acd8-6934-4045-a0ec-615c95bd51e2
+		lineageTag: 8ab05c3a-d69e-4dc4-b1b6-466008464499
 
 	column Hide
 		dataType: string
 		isHidden
-		lineageTag: 11a45a20-a740-4497-86d4-a751ec7323bd
+		lineageTag: 88db1380-aadd-4ee9-aa4c-f894ce1fd987
 		summarizeBy: none
 		sourceColumn: Hide
 

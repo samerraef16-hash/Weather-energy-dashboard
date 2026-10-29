@@ -1,0 +1,182 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "1007d94c1e7e4c759c01",
+  "position": {
+    "x": 1156,
+    "y": 656,
+    "z": 32000,
+    "width": 732,
+    "height": 392,
+    "tabOrder": 32000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_anomalies"
+                    }
+                  },
+                  "Property": "datetime_local"
+                }
+              },
+              "queryRef": "fact_anomalies.datetime_local",
+              "nativeQueryRef": "datetime_local",
+              "displayName": "Time (local)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_building"
+                    }
+                  },
+                  "Property": "building_name"
+                }
+              },
+              "queryRef": "dim_building.building_name",
+              "nativeQueryRef": "building_name",
+              "displayName": "Building"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_anomalies"
+                        }
+                      },
+                      "Property": "actual_kwh"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fact_anomalies.actual_kwh)",
+              "nativeQueryRef": "actual_kwh",
+              "displayName": "Actual kWh"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_anomalies"
+                        }
+                      },
+                      "Property": "predicted_kwh"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fact_anomalies.predicted_kwh)",
+              "nativeQueryRef": "predicted_kwh",
+              "displayName": "Expected kWh"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_anomalies"
+                        }
+                      },
+                      "Property": "excess_kwh"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fact_anomalies.excess_kwh)",
+              "nativeQueryRef": "excess_kwh",
+              "displayName": "Excess kWh"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_anomalies"
+                  }
+                },
+                "Property": "datetime_local"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Detected anomalies: hours far above the model's expectation'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

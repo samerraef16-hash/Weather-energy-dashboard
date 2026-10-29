@@ -1,0 +1,131 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "086332d2db5c4bea9085",
+  "position": {
+    "x": 1156,
+    "y": 232,
+    "z": 40000,
+    "width": 732,
+    "height": 400,
+    "tabOrder": 40000
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pipeline_runs"
+                    }
+                  },
+                  "Property": "started_at_utc"
+                }
+              },
+              "queryRef": "pipeline_runs.started_at_utc",
+              "nativeQueryRef": "started_at_utc",
+              "displayName": "Run"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "pipeline_runs"
+                        }
+                      },
+                      "Property": "duration_seconds"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(pipeline_runs.duration_seconds)",
+              "nativeQueryRef": "duration_seconds",
+              "displayName": "Duration (s)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "pipeline_runs"
+                  }
+                },
+                "Property": "started_at_utc"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "categoryAxis": [
+        {
+          "properties": {
+            "axisType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Categorical'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Run duration (seconds); the first run backfilled all history'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
