@@ -1,0 +1,90 @@
+table data_quality_checks
+	lineageTag: 7e18f814-a50d-4fd6-ac2f-3f27b155e984
+
+	column run_id
+		dataType: string
+		lineageTag: 93e0e872-96b2-4cee-8459-837c534c1796
+		summarizeBy: none
+		sourceColumn: run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dataset
+		dataType: string
+		lineageTag: 1941d265-8e65-4f94-9ed7-856371bf3713
+		summarizeBy: none
+		sourceColumn: dataset
+
+		annotation SummarizationSetBy = Automatic
+
+	column check_name
+		dataType: string
+		lineageTag: d2423da0-fc0d-483a-a2cc-a5334b4c8c10
+		summarizeBy: none
+		sourceColumn: check_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: e6b75963-c60a-4f65-b863-5f4fb85d98f7
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_affected
+		dataType: int64
+		formatString: 0
+		lineageTag: 87c8e018-6bfe-4df1-86e7-9dc2dd40b0f4
+		summarizeBy: sum
+		sourceColumn: rows_affected
+
+		annotation SummarizationSetBy = Automatic
+
+	column detail
+		dataType: string
+		lineageTag: aec316b1-9684-4b06-904b-2c9519c7cebe
+		summarizeBy: none
+		sourceColumn: detail
+
+		annotation SummarizationSetBy = Automatic
+
+	column run_started_at_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 59970750-63b7-42c4-8e64-2a286d5708bd
+		summarizeBy: none
+		sourceColumn: run_started_at_utc
+
+		variation Variation
+			isDefault
+			relationship: efeb9590-2998-4b89-a24b-a37216be7150
+			defaultHierarchy: LocalDateTable_fbcd973f-7150-4815-8ee3-6c2af91ad4cb.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition data_quality_checks = m
+		mode: import
+		source =
+				// data_quality_checks: paste into Home > Advanced Editor of a blank query named "data_quality_checks"
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "data_quality_checks.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {
+				        {"run_id", type text},
+				        {"dataset", type text},
+				        {"check_name", type text},
+				        {"status", type text},
+				        {"rows_affected", Int64.Type},
+				        {"detail", type text},
+				        {"run_started_at_utc", type datetime}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

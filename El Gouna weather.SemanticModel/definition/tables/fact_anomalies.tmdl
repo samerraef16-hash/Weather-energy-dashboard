@@ -1,0 +1,125 @@
+table fact_anomalies
+	lineageTag: bc8e8915-9237-4478-a784-bbbcbcaf3692
+
+	column datetime_local
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f2823f34-018a-4645-bfcf-4416a14cfefb
+		summarizeBy: none
+		sourceColumn: datetime_local
+
+		variation Variation
+			isDefault
+			relationship: 53ce3663-f32b-47c2-811c-e571e02848d5
+			defaultHierarchy: LocalDateTable_806c17c1-aac1-4b92-8af8-edee3ab9f425.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3f37590a-439b-4538-b05b-4e860035da76
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: 4394bcee-099e-4485-bdc5-56722dfa4987
+		summarizeBy: sum
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column timestamp_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 703362da-9e7c-498e-ba5c-7c00befee234
+		summarizeBy: none
+		sourceColumn: timestamp_utc
+
+		variation Variation
+			isDefault
+			relationship: 84647f94-e3b3-4694-b12d-694d207171a9
+			defaultHierarchy: LocalDateTable_f029955f-3290-42fb-a855-4567be6129aa.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column building_id
+		dataType: string
+		lineageTag: 8bba2559-9d47-49b0-a116-78f08bfdf171
+		summarizeBy: none
+		sourceColumn: building_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column actual_kwh
+		dataType: double
+		lineageTag: 80909625-5621-43c5-8467-5666ea22047a
+		summarizeBy: sum
+		sourceColumn: actual_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column predicted_kwh
+		dataType: double
+		lineageTag: cfcfbe35-1b1f-42bc-9860-b42c89fd15ac
+		summarizeBy: sum
+		sourceColumn: predicted_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column excess_kwh
+		dataType: double
+		lineageTag: 47fafbaf-607b-4639-9433-50b6ce5623b3
+		summarizeBy: sum
+		sourceColumn: excess_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column temperature_2m
+		dataType: double
+		lineageTag: ea6a993d-b5bc-4b07-84d2-e0d18b6225c4
+		summarizeBy: sum
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_anomalies = m
+		mode: import
+		source =
+				// fact_anomalies: paste into Home > Advanced Editor of a blank query named "fact_anomalies"
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "fact_anomalies.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {
+				        {"datetime_local", type datetime},
+				        {"date", type date},
+				        {"hour", Int64.Type},
+				        {"timestamp_utc", type datetime},
+				        {"building_id", type text},
+				        {"actual_kwh", type number},
+				        {"predicted_kwh", type number},
+				        {"excess_kwh", type number},
+				        {"temperature_2m", type number}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

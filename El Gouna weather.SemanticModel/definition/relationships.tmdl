@@ -1,0 +1,108 @@
+relationship 6f464456-f7d0-47a8-9e0c-ac45cfe21175
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_energy_hourly.datetime_local
+	toColumn: LocalDateTable_6f7efa27-6c78-4043-9438-4c3dfebeac13.Date
+
+relationship 4ac4c4ba-7824-4323-b475-e5462b28ae12
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_energy_hourly.timestamp_utc
+	toColumn: LocalDateTable_f6ef3e7e-619d-4c22-9f2c-115257673dc8.Date
+
+relationship f2b9703f-310e-483a-b416-a414ba899183
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_weather_hourly.datetime_local
+	toColumn: LocalDateTable_eda58328-9bd2-48e9-af8e-dae4cf1905c6.Date
+
+relationship 8e294e62-8efa-49aa-bc0c-343888c32b21
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_weather_hourly.timestamp_utc
+	toColumn: LocalDateTable_ecab97c3-b8bf-4698-a71a-f649afaee912.Date
+
+relationship fc11ca23-3944-4957-b748-dfec59e336d5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_energy_forecast.datetime_local
+	toColumn: LocalDateTable_97132c6c-cdc1-4a42-8df2-19ee8d2ed9e8.Date
+
+relationship dce33d1f-a3e9-4818-92bb-13e5b8337557
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_energy_forecast.timestamp_utc
+	toColumn: LocalDateTable_03e00b1a-e9dd-4990-b5b9-b62a18c2d5c8.Date
+
+relationship 53ce3663-f32b-47c2-811c-e571e02848d5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_anomalies.datetime_local
+	toColumn: LocalDateTable_806c17c1-aac1-4b92-8af8-edee3ab9f425.Date
+
+relationship 84647f94-e3b3-4694-b12d-694d207171a9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_anomalies.timestamp_utc
+	toColumn: LocalDateTable_f029955f-3290-42fb-a855-4567be6129aa.Date
+
+relationship 037c13c2-3a9f-452e-861c-6c1427a8267a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: model_metrics.trained_at_utc
+	toColumn: LocalDateTable_0e0bd460-7c0e-429e-98c9-7f06da9bfc05.Date
+
+relationship eff4c868-1fd4-4ee0-a83f-ccb3430143f7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: pipeline_runs.started_at_utc
+	toColumn: LocalDateTable_40dfa0a9-db26-4ccf-aacf-bb11e4db3620.Date
+
+relationship c9fe6b43-8aa2-44ac-9662-2ef457e50b68
+	joinOnDateBehavior: datePartOnly
+	fromColumn: pipeline_runs.finished_at_utc
+	toColumn: LocalDateTable_c4d9a752-e98a-4a41-b0a2-7bbf04523f6e.Date
+
+relationship efeb9590-2998-4b89-a24b-a37216be7150
+	joinOnDateBehavior: datePartOnly
+	fromColumn: data_quality_checks.run_started_at_utc
+	toColumn: LocalDateTable_fbcd973f-7150-4815-8ee3-6c2af91ad4cb.Date
+
+relationship AutoDetected_d969b3db-56b1-434a-b029-3fdbd3d27995
+	fromColumn: fact_energy_hourly.building_id
+	toColumn: dim_building.building_id
+
+relationship AutoDetected_b5420895-235d-4a36-b080-d0da66858f4a
+	fromColumn: fact_energy_daily_model.building_id
+	toColumn: dim_building.building_id
+
+relationship AutoDetected_c60e2a52-e082-4e04-afdd-3c15f4392b75
+	fromColumn: fact_energy_forecast.building_id
+	toColumn: dim_building.building_id
+
+relationship AutoDetected_2b850dcd-749b-46ea-9762-a20e33c68d28
+	fromColumn: fact_anomalies.building_id
+	toColumn: dim_building.building_id
+
+relationship AutoDetected_b7d20725-b275-4393-a8a4-8297d9f9945a
+	fromColumn: model_metrics.building_id
+	toColumn: dim_building.building_id
+
+relationship AutoDetected_30df851d-4783-4d3f-982f-f951559f93a7
+	fromColumn: model_metrics.run_id
+	toColumn: pipeline_runs.run_id
+
+relationship AutoDetected_696c6af4-619e-4959-90de-d3590077b12f
+	fromColumn: data_quality_checks.run_id
+	toColumn: pipeline_runs.run_id
+
+relationship 81aac40a-4a36-6c84-2fd9-10c0162e65e0
+	fromColumn: fact_energy_hourly.date
+	toColumn: dim_date.date
+
+relationship 4151793c-163a-0a1a-be9f-eec2248bd38a
+	fromColumn: fact_weather_hourly.date
+	toColumn: dim_date.date
+
+relationship ae09693b-8758-58f2-ce50-7e6b5dbb83a0
+	fromColumn: fact_energy_daily_model.date
+	toColumn: dim_date.date
+
+relationship b2be51ab-6f28-67f6-497c-8328f4c8ea57
+	fromColumn: fact_energy_forecast.date
+	toColumn: dim_date.date
+
+relationship df41923c-eb9a-61a3-6cd1-a9c3cfe7b027
+	fromColumn: fact_anomalies.date
+	toColumn: dim_date.date
+

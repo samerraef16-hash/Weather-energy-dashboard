@@ -1,0 +1,57 @@
+table dim_building
+	lineageTag: 325d49cf-8944-4101-bbf5-320f8c7ed2eb
+
+	column building_id
+		dataType: string
+		lineageTag: 50c08ab3-544d-44e9-aa82-e78e87ecc372
+		summarizeBy: none
+		sourceColumn: building_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column building_name
+		dataType: string
+		lineageTag: 213c2de3-64e8-4610-8611-93bf17fa21c5
+		summarizeBy: none
+		sourceColumn: building_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column building_type
+		dataType: string
+		lineageTag: 684fc593-d105-4df5-9899-b8938320b17c
+		summarizeBy: none
+		sourceColumn: building_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column floor_area_m2
+		dataType: int64
+		formatString: 0
+		lineageTag: 19d9dd99-ab29-4ee3-9c4e-cc80218ab1d2
+		summarizeBy: sum
+		sourceColumn: floor_area_m2
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_building = m
+		mode: import
+		source =
+				// dim_building: paste into Home > Advanced Editor of a blank query named "dim_building"
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "dim_building.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {
+				        {"building_id", type text},
+				        {"building_name", type text},
+				        {"building_type", type text},
+				        {"floor_area_m2", Int64.Type}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

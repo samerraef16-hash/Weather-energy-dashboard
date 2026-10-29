@@ -1,0 +1,152 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1043.0253138902181,
+            "y": 576.38761823822313
+          },
+          "nodeIndex": "data_quality_checks",
+          "nodeLineageTag": "7e18f814-a50d-4fd6-ac2f-3f27b155e984",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 239.12292461187985,
+            "y": 280.98785348382711
+          },
+          "nodeIndex": "dim_building",
+          "nodeLineageTag": "325d49cf-8944-4101-bbf5-320f8c7ed2eb",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1459.9492412748011,
+            "y": 515.87863659874938
+          },
+          "nodeIndex": "dim_date",
+          "nodeLineageTag": "bcafe4d2-c0be-4510-9dbd-4da5ad887b09",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 376.61466559585642,
+            "y": 548.39914223274184
+          },
+          "nodeIndex": "fact_anomalies",
+          "nodeLineageTag": "bc8e8915-9237-4478-a784-bbbcbcaf3692",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 32.577534296299035
+          },
+          "nodeIndex": "fact_energy_daily_model",
+          "nodeLineageTag": "d07841c4-fb8b-4f58-8a4e-299cb231d5d8",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 392.29101493379267,
+            "y": 0
+          },
+          "nodeIndex": "fact_energy_forecast",
+          "nodeLineageTag": "20bdd910-1373-47be-8462-91b54b9ae45f",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 536.61355022934868
+          },
+          "nodeIndex": "fact_energy_hourly",
+          "nodeLineageTag": "2d18aa75-5dd2-4e22-9d08-e81ca5827e83",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1872.0605472394145,
+            "y": 515.87863659874938
+          },
+          "nodeIndex": "fact_weather_hourly",
+          "nodeLineageTag": "3452a5d6-92cc-4f05-a63d-e1a75a29f86e",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 621.42398670625266,
+            "y": 267.64786703059303
+          },
+          "nodeIndex": "model_metrics",
+          "nodeLineageTag": "c81a1445-e1f4-42b5-b9f1-574a18efbcb4",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 948.69003843507915,
+            "y": 155.850045129571
+          },
+          "nodeIndex": "pipeline_runs",
+          "nodeLineageTag": "dcf61668-c1f2-4fe4-aa62-6569a8756958",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 62.336089590424479,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

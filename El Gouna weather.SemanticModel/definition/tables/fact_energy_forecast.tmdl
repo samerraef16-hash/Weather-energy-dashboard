@@ -1,0 +1,103 @@
+table fact_energy_forecast
+	lineageTag: 20bdd910-1373-47be-8462-91b54b9ae45f
+
+	column datetime_local
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d5f249bd-60c9-4728-a75d-c2255ac3298e
+		summarizeBy: none
+		sourceColumn: datetime_local
+
+		variation Variation
+			isDefault
+			relationship: fc11ca23-3944-4957-b748-dfec59e336d5
+			defaultHierarchy: LocalDateTable_97132c6c-cdc1-4a42-8df2-19ee8d2ed9e8.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d40aeac6-61dc-40c2-a4d2-9e4740ab3a0c
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: 3a446ab6-8284-4e23-94f9-8bb2b8cf28de
+		summarizeBy: sum
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column timestamp_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a92a5cae-e052-4f13-8f76-9aa2f6734098
+		summarizeBy: none
+		sourceColumn: timestamp_utc
+
+		variation Variation
+			isDefault
+			relationship: dce33d1f-a3e9-4818-92bb-13e5b8337557
+			defaultHierarchy: LocalDateTable_03e00b1a-e9dd-4990-b5b9-b62a18c2d5c8.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column building_id
+		dataType: string
+		lineageTag: 0c538002-272a-47c7-9723-126a356e458a
+		summarizeBy: none
+		sourceColumn: building_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column predicted_kwh
+		dataType: double
+		lineageTag: 36ac7d10-0005-4228-b4f7-016d19f86d0d
+		summarizeBy: sum
+		sourceColumn: predicted_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column temperature_2m
+		dataType: double
+		lineageTag: b2c6f9c5-b430-42ea-927c-5363675ae00f
+		summarizeBy: sum
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_energy_forecast = m
+		mode: import
+		source =
+				// fact_energy_forecast: paste into Home > Advanced Editor of a blank query named "fact_energy_forecast"
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "fact_energy_forecast.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {
+				        {"datetime_local", type datetime},
+				        {"date", type date},
+				        {"hour", Int64.Type},
+				        {"timestamp_utc", type datetime},
+				        {"building_id", type text},
+				        {"predicted_kwh", type number},
+				        {"temperature_2m", type number}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

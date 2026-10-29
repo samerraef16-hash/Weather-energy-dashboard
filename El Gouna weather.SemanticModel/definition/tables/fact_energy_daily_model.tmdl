@@ -1,0 +1,74 @@
+table fact_energy_daily_model
+	lineageTag: d07841c4-fb8b-4f58-8a4e-299cb231d5d8
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 65419ceb-1efd-4888-b653-7f2f99137257
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column building_id
+		dataType: string
+		lineageTag: a36b2904-fb45-4c4e-899e-9e92b6c54e85
+		summarizeBy: none
+		sourceColumn: building_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column actual_kwh
+		dataType: double
+		lineageTag: ffd3202c-fc31-4678-b87c-413e41e4cae3
+		summarizeBy: sum
+		sourceColumn: actual_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column predicted_kwh
+		dataType: double
+		lineageTag: d29c49bd-8560-46d8-9982-407d376072fd
+		summarizeBy: sum
+		sourceColumn: predicted_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column variance_kwh
+		dataType: double
+		lineageTag: 94760aa3-0fe4-41c9-b83a-3aff1a252200
+		summarizeBy: sum
+		sourceColumn: variance_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_energy_daily_model = m
+		mode: import
+		source =
+				// fact_energy_daily_model: paste into Home > Advanced Editor of a blank query named "fact_energy_daily_model"
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "fact_energy_daily_model.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {
+				        {"date", type date},
+				        {"building_id", type text},
+				        {"actual_kwh", type number},
+				        {"predicted_kwh", type number},
+				        {"variance_kwh", type number}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

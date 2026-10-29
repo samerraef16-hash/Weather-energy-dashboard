@@ -1,0 +1,9 @@
+expression BaseUrl =
+		let
+		    Source = "https://raw.githubusercontent.com/samerraef16-hash/weather-energy-dashboard/main/data/powerbi/" meta [IsParameterQuery = true, IsParameterQueryRequired = false, Type = type text]
+		in
+		    Source
+	lineageTag: 724f3e34-39d2-4f2d-8662-685a5a6d4ba3
+
+	annotation PBI_ResultType = Text
+

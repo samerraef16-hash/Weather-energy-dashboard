@@ -1,0 +1,41 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["BaseUrl","dim_building","dim_date","fact_energy_hourly","fact_weather_hourly","fact_energy_daily_model","fact_energy_forecast","fact_anomalies","model_metrics","pipeline_runs","data_quality_checks"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table dim_building
+ref table dim_date
+ref table DateTableTemplate_c563eb72-f8a8-4678-952a-86e3d459a4a4
+ref table fact_energy_hourly
+ref table LocalDateTable_6f7efa27-6c78-4043-9438-4c3dfebeac13
+ref table LocalDateTable_f6ef3e7e-619d-4c22-9f2c-115257673dc8
+ref table fact_weather_hourly
+ref table LocalDateTable_eda58328-9bd2-48e9-af8e-dae4cf1905c6
+ref table LocalDateTable_ecab97c3-b8bf-4698-a71a-f649afaee912
+ref table fact_energy_daily_model
+ref table fact_energy_forecast
+ref table LocalDateTable_97132c6c-cdc1-4a42-8df2-19ee8d2ed9e8
+ref table LocalDateTable_03e00b1a-e9dd-4990-b5b9-b62a18c2d5c8
+ref table fact_anomalies
+ref table LocalDateTable_806c17c1-aac1-4b92-8af8-edee3ab9f425
+ref table LocalDateTable_f029955f-3290-42fb-a855-4567be6129aa
+ref table model_metrics
+ref table LocalDateTable_0e0bd460-7c0e-429e-98c9-7f06da9bfc05
+ref table pipeline_runs
+ref table LocalDateTable_40dfa0a9-db26-4ccf-aacf-bb11e4db3620
+ref table LocalDateTable_c4d9a752-e98a-4a41-b0a2-7bbf04523f6e
+ref table data_quality_checks
+ref table LocalDateTable_fbcd973f-7150-4815-8ee3-6c2af91ad4cb
+
+ref cultureInfo en-US
+

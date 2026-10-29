@@ -13,3 +13,9 @@ venv/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Power BI project (.pbip): keep the definition files, skip local caches
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+# The .pbip project is the source of truth; a .pbix copy is not versioned
+*.pbix

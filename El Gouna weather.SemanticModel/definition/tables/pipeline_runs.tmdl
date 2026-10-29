@@ -1,0 +1,138 @@
+table pipeline_runs
+	lineageTag: dcf61668-c1f2-4fe4-aa62-6569a8756958
+
+	column run_id
+		dataType: string
+		lineageTag: 251bb463-0d28-4b47-a1b0-53c28f58d304
+		summarizeBy: none
+		sourceColumn: run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column started_at_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 006f8c50-0328-4f47-97b8-118aca5fe48f
+		summarizeBy: none
+		sourceColumn: started_at_utc
+
+		variation Variation
+			isDefault
+			relationship: eff4c868-1fd4-4ee0-a83f-ccb3430143f7
+			defaultHierarchy: LocalDateTable_40dfa0a9-db26-4ccf-aacf-bb11e4db3620.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column finished_at_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9ea3f713-217d-463e-ac3f-0ab1907a767e
+		summarizeBy: none
+		sourceColumn: finished_at_utc
+
+		variation Variation
+			isDefault
+			relationship: c9fe6b43-8aa2-44ac-9662-2ef457e50b68
+			defaultHierarchy: LocalDateTable_c4d9a752-e98a-4a41-b0a2-7bbf04523f6e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 88c4fdba-7e1f-4bd9-b122-7d5d88d4949b
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_rows_fetched
+		dataType: int64
+		formatString: 0
+		lineageTag: 8e9cc5a4-7e4b-428d-b6b3-21bba34b332e
+		summarizeBy: sum
+		sourceColumn: weather_rows_fetched
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_rows_loaded
+		dataType: int64
+		formatString: 0
+		lineageTag: 9890a0b9-46c6-4057-a9f6-dd7468de4042
+		summarizeBy: sum
+		sourceColumn: weather_rows_loaded
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_rows_loaded
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a9c18b3-67dc-4407-8291-3c22b6a2d377
+		summarizeBy: sum
+		sourceColumn: energy_rows_loaded
+
+		annotation SummarizationSetBy = Automatic
+
+	column checks_passed
+		dataType: int64
+		formatString: 0
+		lineageTag: a2b8a996-52ba-4025-b1c0-9145fc6ec775
+		summarizeBy: sum
+		sourceColumn: checks_passed
+
+		annotation SummarizationSetBy = Automatic
+
+	column checks_warned
+		dataType: int64
+		formatString: 0
+		lineageTag: bcefe57d-678e-4ac2-9cfc-07105e5cc552
+		summarizeBy: sum
+		sourceColumn: checks_warned
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_seconds
+		dataType: double
+		lineageTag: a9337bbd-8767-47f4-b890-ded5eaa62b20
+		summarizeBy: sum
+		sourceColumn: duration_seconds
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column message
+		dataType: string
+		lineageTag: d8b3e7df-e247-4eec-b594-7365765922c1
+		summarizeBy: none
+		sourceColumn: message
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pipeline_runs = m
+		mode: import
+		source =
+				// pipeline_runs: paste into Home > Advanced Editor of a blank query named "pipeline_runs"
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "pipeline_runs.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {
+				        {"run_id", type text},
+				        {"started_at_utc", type datetime},
+				        {"finished_at_utc", type datetime},
+				        {"status", type text},
+				        {"weather_rows_fetched", Int64.Type},
+				        {"weather_rows_loaded", Int64.Type},
+				        {"energy_rows_loaded", Int64.Type},
+				        {"checks_passed", Int64.Type},
+				        {"checks_warned", Int64.Type},
+				        {"duration_seconds", type number},
+				        {"message", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

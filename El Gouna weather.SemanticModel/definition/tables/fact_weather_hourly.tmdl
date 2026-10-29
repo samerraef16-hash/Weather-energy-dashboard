@@ -1,0 +1,168 @@
+table fact_weather_hourly
+	lineageTag: 3452a5d6-92cc-4f05-a63d-e1a75a29f86e
+
+	column datetime_local
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 669a0a74-c35d-4114-862d-e51293b696d4
+		summarizeBy: none
+		sourceColumn: datetime_local
+
+		variation Variation
+			isDefault
+			relationship: f2b9703f-310e-483a-b416-a414ba899183
+			defaultHierarchy: LocalDateTable_eda58328-9bd2-48e9-af8e-dae4cf1905c6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 132c1872-ee2b-4119-820f-1361f0b2b728
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: d729ea76-d6ac-4510-a0d6-3946e7c3ddc8
+		summarizeBy: sum
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column timestamp_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c0902d86-9608-41c5-b7a2-2bd0a7bc00f4
+		summarizeBy: none
+		sourceColumn: timestamp_utc
+
+		variation Variation
+			isDefault
+			relationship: 8e294e62-8efa-49aa-bc0c-343888c32b21
+			defaultHierarchy: LocalDateTable_ecab97c3-b8bf-4698-a71a-f649afaee912.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column temperature_2m
+		dataType: double
+		lineageTag: f1f90475-03ca-4428-bd3b-2eb590e8a3ac
+		summarizeBy: sum
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column apparent_temperature
+		dataType: double
+		lineageTag: 34a4c87f-d866-4721-bdc2-46a74d00831e
+		summarizeBy: sum
+		sourceColumn: apparent_temperature
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column relative_humidity_2m
+		dataType: double
+		lineageTag: 0c364b11-10fa-4cf7-83a8-d0387d476551
+		summarizeBy: sum
+		sourceColumn: relative_humidity_2m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cloud_cover
+		dataType: double
+		lineageTag: 1a526666-e419-42ba-ae3e-2d6c557df7fe
+		summarizeBy: sum
+		sourceColumn: cloud_cover
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column wind_speed_10m
+		dataType: double
+		lineageTag: 226bd65f-2133-4abd-8325-1a69e5a7cafb
+		summarizeBy: sum
+		sourceColumn: wind_speed_10m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column shortwave_radiation
+		dataType: double
+		lineageTag: 7a10a808-c415-47de-9776-57f99c9134f7
+		summarizeBy: sum
+		sourceColumn: shortwave_radiation
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column precipitation
+		dataType: double
+		lineageTag: d95f3bea-504d-49cc-8836-1cd89b183eeb
+		summarizeBy: sum
+		sourceColumn: precipitation
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_forecast
+		dataType: int64
+		formatString: 0
+		lineageTag: 5422206e-8c40-4c36-ac28-d58eb9ee3315
+		summarizeBy: sum
+		sourceColumn: is_forecast
+
+		annotation SummarizationSetBy = Automatic
+
+	column source
+		dataType: string
+		lineageTag: 97ee8e57-79ef-4497-b08f-9f272e593ea2
+		summarizeBy: none
+		sourceColumn: source
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_weather_hourly = m
+		mode: import
+		source =
+				// fact_weather_hourly: paste into Home > Advanced Editor of a blank query named "fact_weather_hourly"
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "fact_weather_hourly.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {
+				        {"datetime_local", type datetime},
+				        {"date", type date},
+				        {"hour", Int64.Type},
+				        {"timestamp_utc", type datetime},
+				        {"temperature_2m", type number},
+				        {"apparent_temperature", type number},
+				        {"relative_humidity_2m", type number},
+				        {"cloud_cover", type number},
+				        {"wind_speed_10m", type number},
+				        {"shortwave_radiation", type number},
+				        {"precipitation", type number},
+				        {"is_forecast", Int64.Type},
+				        {"source", type text}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

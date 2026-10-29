@@ -1,0 +1,168 @@
+table fact_energy_hourly
+	lineageTag: 2d18aa75-5dd2-4e22-9d08-e81ca5827e83
+
+	column datetime_local
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c573eab2-a18b-46c5-985d-c948b84e0d02
+		summarizeBy: none
+		sourceColumn: datetime_local
+
+		variation Variation
+			isDefault
+			relationship: 6f464456-f7d0-47a8-9e0c-ac45cfe21175
+			defaultHierarchy: LocalDateTable_6f7efa27-6c78-4043-9438-4c3dfebeac13.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0b53af2a-18c0-4a46-86f7-fa42e0bca913
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: f07f514e-ecdd-4bc8-9513-3e469fe74c8e
+		summarizeBy: sum
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column timestamp_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d134fd91-e89b-4a66-a367-bae0adb10997
+		summarizeBy: none
+		sourceColumn: timestamp_utc
+
+		variation Variation
+			isDefault
+			relationship: 4ac4c4ba-7824-4323-b475-e5462b28ae12
+			defaultHierarchy: LocalDateTable_f6ef3e7e-619d-4c22-9f2c-115257673dc8.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column building_id
+		dataType: string
+		lineageTag: fc538bbd-e1cc-4d3f-9266-d0228bc578df
+		summarizeBy: none
+		sourceColumn: building_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_kwh
+		dataType: double
+		lineageTag: 78005949-75bc-457c-a612-95c5e85f0a9c
+		summarizeBy: sum
+		sourceColumn: energy_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column hvac_kwh
+		dataType: double
+		lineageTag: bf72ea39-8e0c-449d-af0f-f6c221812529
+		summarizeBy: sum
+		sourceColumn: hvac_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column base_kwh
+		dataType: double
+		lineageTag: 34ed06fe-b6c3-4939-90fc-66583135776a
+		summarizeBy: sum
+		sourceColumn: base_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column occupancy_factor
+		dataType: double
+		lineageTag: 5a6ab480-76f1-4da7-ab95-776e95b61d7e
+		summarizeBy: sum
+		sourceColumn: occupancy_factor
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column temperature_2m
+		dataType: double
+		lineageTag: beca2315-4bfe-40a4-a7f1-7f2e1b45afd6
+		summarizeBy: sum
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_detected_anomaly
+		dataType: int64
+		formatString: 0
+		lineageTag: 9b528ee8-2b55-4604-b313-893606441f7e
+		summarizeBy: sum
+		sourceColumn: is_detected_anomaly
+
+		annotation SummarizationSetBy = Automatic
+
+	column cost
+		dataType: double
+		lineageTag: 7c5b04d8-a9c3-44c1-b4dc-d9bd7d511f8e
+		summarizeBy: sum
+		sourceColumn: cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column co2_kg
+		dataType: double
+		lineageTag: 82fda072-adbf-454d-b32f-cfd179b6d28a
+		summarizeBy: sum
+		sourceColumn: co2_kg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_energy_hourly = m
+		mode: import
+		source =
+				// fact_energy_hourly: paste into Home > Advanced Editor of a blank query named "fact_energy_hourly"
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "fact_energy_hourly.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {
+				        {"datetime_local", type datetime},
+				        {"date", type date},
+				        {"hour", Int64.Type},
+				        {"timestamp_utc", type datetime},
+				        {"building_id", type text},
+				        {"energy_kwh", type number},
+				        {"hvac_kwh", type number},
+				        {"base_kwh", type number},
+				        {"occupancy_factor", type number},
+				        {"temperature_2m", type number},
+				        {"is_detected_anomaly", Int64.Type},
+				        {"cost", type number},
+				        {"co2_kg", type number}
+				    }, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
