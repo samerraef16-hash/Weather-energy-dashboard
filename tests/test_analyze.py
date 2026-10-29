@@ -18,8 +18,8 @@ def test_model_is_accurate_on_simulated_data(cfg, weather_factory):
     assert (metrics["mape_pct"] < 15).all()
     # Hotter weather costs energy: every building has a positive cooling sensitivity.
     assert (metrics["kwh_per_cooling_degree"] > 0).all()
-    # Daily totals cover every building-day and roughly balance out.
-    assert result.daily.groupby("building_id").size().min() >= 200
+    # Daily totals cover every complete building-day and roughly balance out.
+    assert result.daily.groupby("building_id").size().min() >= 198
     totals = result.daily[["actual_kwh", "predicted_kwh"]].sum()
     assert abs(totals["actual_kwh"] / totals["predicted_kwh"] - 1) < 0.02
 

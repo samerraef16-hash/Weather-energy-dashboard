@@ -180,12 +180,13 @@ def analyze(energy: pd.DataFrame, weather: pd.DataFrame, building_ids: list[str]
 
         hist["predicted_kwh"] = fitted
         hist["date"] = hist["timestamp_utc"].dt.tz_convert(tz).dt.strftime("%Y-%m-%d")
-        daily.append(
-            hist.groupby("date", as_index=False)
-            .agg(actual_kwh=("energy_kwh", "sum"), predicted_kwh=("predicted_kwh", "sum"))
-            .round(1)
-            .assign(building_id=building_id)
-        )
+        days = (hist.groupby("date", as_index=False)
+                .agg(actual_kwh=("energy_kwh", "sum"), predicted_kwh=("predicted_kwh", "sum"),
+                     hours=("energy_kwh", "size")))
+        # Only complete local days (23-25 hours around daylight-saving changes);
+        # a half-finished "today" would show as a misleading drop.
+        days = days[days["hours"] >= 23].drop(columns="hours")
+        daily.append(days.round(1).assign(building_id=building_id))
         anomalies.append(pd.DataFrame({
             "timestamp_utc": hist.loc[flagged, "timestamp_utc"],
             "building_id": building_id,
