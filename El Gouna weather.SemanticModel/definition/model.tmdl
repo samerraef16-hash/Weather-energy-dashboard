@@ -9,10 +9,11 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["BaseUrl","dim_building","dim_date","fact_energy_hourly","fact_weather_hourly","fact_energy_daily_model","fact_energy_forecast","fact_anomalies","model_metrics","pipeline_runs","data_quality_checks"]
+annotation PBI_QueryOrder = ["BaseUrl","_Measures","dim_building","dim_date","fact_energy_hourly","fact_weather_hourly","fact_energy_daily_model","fact_energy_forecast","fact_anomalies","model_metrics","pipeline_runs","data_quality_checks"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
+ref table _Measures
 ref table dim_building
 ref table dim_date
 ref table DateTableTemplate_c563eb72-f8a8-4678-952a-86e3d459a4a4

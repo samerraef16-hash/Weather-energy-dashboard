@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "5e3b5d276b3e4283bb00",
+  "position": {
+    "x": 1368,
+    "y": 16,
+    "z": 23000,
+    "width": 520,
+    "height": 60,
+    "tabOrder": 23000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Data Freshness Label"
+                }
+              },
+              "queryRef": "_Measures.Data Freshness Label",
+              "nativeQueryRef": "Data Freshness Label"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -5,7 +5,7 @@ venv/
 .pytest_cache/
 .env
 
-# Power BI temp files (the .pbix itself IS committed)
+# Power BI temp files
 ~$*.pbix
 *.pbix.bak
 

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "58dc29a5ad284f92865c",
+  "position": {
+    "x": 502.0,
+    "y": 92,
+    "z": 16000,
+    "width": 446.0,
+    "height": 130,
+    "tabOrder": 16000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Hot Hours"
+                }
+              },
+              "queryRef": "_Measures.Hot Hours",
+              "nativeQueryRef": "Hot Hours"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

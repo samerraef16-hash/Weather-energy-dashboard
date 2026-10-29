@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "bc83d1ff8ff4479d88aa",
+  "position": {
+    "x": 1160.0,
+    "y": 208,
+    "z": 8000,
+    "width": 352.0,
+    "height": 130,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Peak Demand kW"
+                }
+              },
+              "queryRef": "_Measures.Peak Demand kW",
+              "nativeQueryRef": "Peak Demand kW"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
