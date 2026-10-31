@@ -674,3 +674,4 @@ date,year,quarter,month_number,month_name,month_short,year_month,day_of_week_num
 2026-11-04,2026,Q4,11,November,Nov,2026-11,4,Wednesday,True,Autumn
 2026-11-05,2026,Q4,11,November,Nov,2026-11,5,Thursday,True,Autumn
 2026-11-06,2026,Q4,11,November,Nov,2026-11,6,Friday,False,Autumn
+2026-11-07,2026,Q4,11,November,Nov,2026-11,7,Saturday,False,Autumn
