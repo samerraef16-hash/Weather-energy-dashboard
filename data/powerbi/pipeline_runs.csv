@@ -21,3 +21,4 @@ run_id,started_at_utc,finished_at_utc,status,weather_rows_fetched,weather_rows_l
 20261113T104452Z,2026-11-13 10:44:52,2026-11-13 10:44:59,success,336.0,336.0,576.0,17.0,0.0,7.25,ok
 20261114T095857Z,2026-11-14 09:58:57,2026-11-14 09:59:03,success,336.0,336.0,573.0,17.0,0.0,6.79,ok
 20261115T103547Z,2026-11-15 10:35:47,2026-11-15 10:38:53,failed,,,,,,186.3,"ReadTimeout: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=60)"
+20261116T105227Z,2026-11-16 10:52:27,2026-11-16 10:52:32,success,336.0,336.0,651.0,17.0,0.0,5.52,ok
