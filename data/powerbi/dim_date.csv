@@ -701,3 +701,5 @@ date,year,quarter,month_number,month_name,month_short,year_month,day_of_week_num
 2026-12-01,2026,Q4,12,December,Dec,2026-12,3,Tuesday,True,Winter
 2026-12-02,2026,Q4,12,December,Dec,2026-12,4,Wednesday,True,Winter
 2026-12-03,2026,Q4,12,December,Dec,2026-12,5,Thursday,True,Winter
+2026-12-04,2026,Q4,12,December,Dec,2026-12,6,Friday,False,Winter
+2026-12-05,2026,Q4,12,December,Dec,2026-12,7,Saturday,False,Winter
